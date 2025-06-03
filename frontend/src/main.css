@@ -1,0 +1,66 @@
+/*@import "tailwindcss";*/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.Nav_bar_container{
+    display: flex;
+    padding: 0.4rem 3rem;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgb(105, 96, 96 ,0.4);
+}
+.Nav_bar_container img, .footer_container2 img{
+    width: 5rem;
+    height: 3.5rem;
+}
+.Nav_bar_container ul{
+    list-style: none;
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+}
+.Nav_bar_container button ,.authentification_container2 button{
+    border: none;
+    background-color: #F49BAB;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: 800;
+    cursor: pointer;
+}
+.authentification_container2 button{
+    background-color: #9B7EBD;
+}
+.Nav_bar_container a{
+    text-decoration: none;
+    color: black;
+    font-weight: 400;
+}
+.authentification_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.authentification_container2,.authentification_container2 form div,.authentification_container2 form{
+    display: flex;
+    flex-direction: column;
+}
+.authentification_container2>div{
+    text-align: center;
+}
+.authentification_container2{
+    gap: 2rem;
+    justify-content: center;
+    border: 1px solid #9B7EBD;
+    padding: 2rem;
+    border-radius: 1rem;
+}
+.authentification_container2 form{
+    gap: 1rem;
+}
+.authentification_container2 form div{
+    gap: 1rem;
+}
