@@ -51,8 +51,14 @@
 .authentification_container2>div{
     text-align: center;
 }
+.authentification_container2 form input{
+    height: 2.5rem;
+    border-radius: 0.3rem;
+    border: 1px solid #9B7EBD;
+}
 .authentification_container2{
     gap: 2rem;
+    width: 30rem;
     justify-content: center;
     border: 1px solid #9B7EBD;
     padding: 2rem;
