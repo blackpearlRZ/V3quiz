@@ -1,13 +1,18 @@
-import Login from "./components/Auth/login"
-import Footer from "./components/Footer"
-import Navbar from "./components/Navbar"
-Footer
+import HeroSection from "./components/home/HeroSections"
+import { Routes, Route } from "react-router-dom";
+import Login from "./components/Auth/login";
+import Home from "./Home";
+
 export default function layout() {
   return (
     <div>
-        <Navbar/>
-        <Login/>
-        <Footer/>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/auth/login" element={<Login />} />
+      {/* <Route path="/quiz" element={<Quiz />} />
+      <Route path="/auth/register" element={<Register />} />
+      <Route path="/dashboard" element={<Dashboard />} /> */}
+    </Routes>
     </div>
   )
 }

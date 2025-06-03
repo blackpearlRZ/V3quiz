@@ -1,10 +1,13 @@
-import Layout from "./layout"
-
+import Layout from "./Layout"
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
 function App() {
   return (
     <>
-     <Layout/>
+    <Navbar/>
+    <Layout/>
+    <Footer/>
     </>
   )
 }

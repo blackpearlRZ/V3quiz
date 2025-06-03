@@ -1,36 +1,46 @@
-import logo from '../assets/logo3.png'
+import { Link } from "react-router-dom";
+import logo from "../assets/logo3.png"
 
 export default function Footer() {
   return (
-    <div className='footer_container'>
-        <div className='footer_container2'>
-            <div className="footer_items">
-                <img src={logo} alt="V3Quiz_logo" />
-                <p>Testez vos connaissances en langages informatiques avec notre plateforme de quiz interactifs.</p>
-            </div>
-            <div className="footer_items">
-                <h6>Liens rapides</h6>
-                <ul>
-                    <li><a href="">Accueil</a></li>
-                    <li><a href="">Quiz</a></li>
-                    <li><a href="">Tableau de bord</a></li>
-                </ul>
-            </div>
-            <div className="footer_items">
-                <h6>Compte</h6>
-                <ul>
-                    <li><a href="">Connexion</a></li>
-                    <li><a href="">Inscription</a></li>
-                </ul>
-            </div>
+    <footer>
+      <div className="footer-container">
+        <div className="footer-grid">
+          <div>
+            <h3 className="footer-title">
+              <span><img src={logo} alt="" style={{width : "4rem"}} /></span>
+            </h3>
+            <p className="footer-description">
+              Testez vos connaissances en langages informatiques avec notre plateforme de quiz interactifs.
+            </p>
+          </div>
+
+          <div>
+            <h4 className="footer-heading">Liens rapides</h4>
+            <ul className="footer-links">
+              <li><Link to="/">Accueil</Link></li>
+              <li><Link to="/quiz">Quiz</Link></li>
+              <li><Link to="/dashboard">Tableau de bord</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="footer-heading">Compte</h4>
+            <ul className="footer-account">
+              <li><Link to="/auth/login">Connexion</Link></li>
+              <li><Link to="/auth/register">Inscription</Link></li>
+            </ul>
+          </div>
         </div>
-        <div>
-            <p> 2025 ,V3 Quiz. Tous droits reserves</p>
-            <div>
-                <a href="">Confidentialite</a>
-                <a href="">Conditions d'utilisation</a>
-            </div>
+
+        <div className="footer-bottom">
+          <p>&copy; {new Date().getFullYear()} V3 Quiz. Tous droits réservés.</p>
+          <div>
+            <Link to="/privacy">Confidentialité</Link>
+            <Link to="/terms">Conditions d'utilisation</Link>
+          </div>
         </div>
-    </div>
-  )
+      </div>
+    </footer>
+  );
 }
