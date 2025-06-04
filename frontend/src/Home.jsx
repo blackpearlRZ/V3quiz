@@ -1,3 +1,4 @@
+import FeatureSection from "./components/home/FeatureSection"
 import HeroSection from "./components/home/HeroSections"
 import LanguageSection from "./components/home/LanguagesSection"
 
@@ -7,6 +8,7 @@ export default function Home() {
     <div>
       <HeroSection/> 
       <LanguageSection/> 
+      <FeatureSection/> 
     </div>
   )
 }
