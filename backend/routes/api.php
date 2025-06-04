@@ -30,5 +30,9 @@ Route::controller(AuthController::class)->group(function() {
 });
 
 Route::middleware(['auth', 'is_admin'])->group(function() {
-    Route::resource('quizzes', QuizController::class);
+    Route::get('/quizzes', [QuizController::class, 'index']);
+    Route::get('/quizzes/{id}', [QuizController::class, 'show']);
+    
+    // Questions route
+    Route::get('/questions', [QuestionController::class, 'index']);
 });
