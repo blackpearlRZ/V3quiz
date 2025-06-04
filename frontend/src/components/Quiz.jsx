@@ -18,12 +18,12 @@ export default function Quiz() {
     const fetchQuizData = async () => {
       try {
         // Fetch quiz details
-        const quizResponse = await axios.get(`/api/quizzes/${quizId}`);
+        const quizResponse = await axios.get(`http://localhost:8000/api/quizzes/${quizId}`);
         setQuiz(quizResponse.data);
         setTimeLeft(quizResponse.data.tempsLimite * 60); // Convert minutes to seconds
 
         // Fetch questions for this quiz
-        const questionsResponse = await axios.get(`/api/questions?quiz_id=${quizId}`);
+        const questionsResponse = await axios.get(`http://localhost:8000/api/questions?quiz_id=${quizId}`);
         setQuestions(questionsResponse.data);
         setLoading(false);
       } catch (err) {
@@ -72,7 +72,7 @@ export default function Quiz() {
       const successRate = (score / questions.reduce((acc, q) => acc + q.points, 0)) * 100;
       const averageTime = quiz.tempsLimite * 60 - timeLeft;
 
-      await axios.post("/api/statistiques", {
+      await axios.post("http://localhost:8000/api/statistiques", {
         utilisateur_id: userId,
         langage: language,
         reussiteMoyenne: successRate,

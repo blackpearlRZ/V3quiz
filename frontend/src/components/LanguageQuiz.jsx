@@ -11,7 +11,7 @@ export default function LanguageQuiz() {
   useEffect(() => {
     const fetchQuizzes = async () => {
       try {
-        const response = await axios.get(`/api/quizzes?langage=${language}`);
+        const response = await axios.get(`http://localhost:8000/api/quizzes?langage=${language}`);
         setQuizzes(response.data);
         setLoading(false);
       } catch (err) {
