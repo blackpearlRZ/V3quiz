@@ -29,8 +29,8 @@ Route::controller(AuthController::class)->group(function() {
     Route::post('/logout', 'logout')->name('logout');
 });
 
+Route::get('/quizzes', [QuizController::class, 'index']);
 Route::middleware(['auth', 'is_admin'])->group(function() {
-    Route::get('/quizzes', [QuizController::class, 'index']);
     Route::get('/quizzes/{id}', [QuizController::class, 'show']);
     
     // Questions route

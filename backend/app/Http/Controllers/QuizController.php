@@ -10,9 +10,14 @@ class QuizController extends Controller
     
     public function index()
     {
-        $quizzes = Quiz::all();
-        return response()->json($quizzes);
-    }
+        try {
+        return response()->json([
+            'quizzes' => Quiz::all() // Ensure Quiz model exists
+        ]);
+    } catch (\Exception $e) {
+        \Log::error($e); // Check storage/logs/laravel.log
+        return response()->json(['error' => 'Server error'],500);}
+}
 
 
     public function store(Request $request)
