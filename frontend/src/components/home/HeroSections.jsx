@@ -19,7 +19,7 @@ export default function HeroSection() {
                 <button className="custom-primary-btn">Commencer un quiz</button>
               </Link>
               <Link to="/auth/register">
-                <button className="custom-primary-btn">S'inscrire gratuitement</button>
+                <button className="custom-secondary-btn">S'inscrire gratuitement</button>
               </Link>
             </div>
           </div>
