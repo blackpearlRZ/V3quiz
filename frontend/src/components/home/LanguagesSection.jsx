@@ -71,8 +71,8 @@ export default function LanguageSection() {
         <div className="grid">
           {languages.map((language) => (
             <Link
-              key={language.id}
-              to={`/quiz/language/${language.id}`}
+                key={language.id}
+                to={`/quiz/langage/${language.id}`}
               className="language-link"
             >
               <div className={`card ${language.colorClass}`}>

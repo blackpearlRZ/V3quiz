@@ -691,5 +691,95 @@ footer {
   color: #666;
 }
 
+.langage-quizzes-page {
+  padding: 2rem 0;
+}
 
+.langage-quizzes-page .header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.langage-quizzes-page .langage-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.langage-quizzes-page h1 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.quizzes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.quiz-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.quiz-card:hover {
+  transform: translateY(-5px);
+}
+
+.quiz-meta {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.start-button {
+  display: inline-block;
+  background: var(--primary-color);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.start-button:hover {
+  background: var(--primary-dark);
+}
+
+/* Language-specific colors */
+.html .start-button { --primary-color: #e44d26; --primary-dark: #c53717; }
+.css .start-button { --primary-color: #264de4; --primary-dark: #1a3bc1; }
+.javascript .start-button { --primary-color: #f0db4f; --primary-dark: #dac542; color: #323330; }
+.python .start-button { --primary-color: #3776ab; --primary-dark: #2a5d84; }
+.react .start-button { --primary-color: #61dafb; --primary-dark: #4fc8e8; color: #282c34; }
+.php .start-button { --primary-color: #777bb3; --primary-dark: #5f639b; }
+
+.loading, .error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+}
+
+.error {
+  color: #d32f2f;
+}
+
+.no-quizzes {
+  text-align: center;
+  padding: 2rem;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--primary-color);
+  text-decoration: none;
+}
 
