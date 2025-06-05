@@ -50,8 +50,13 @@ class QuizController extends Controller
 
     public function show($id)
     {
-        $quiz = Quiz::find($id);
-        return response()->json($quiz->load(['questions', 'questions.reponses']));
+        $quiz = Quiz::with(['questions.reponses'])->find($id);
+
+        if (!$quiz) {
+            return response()->json(['error' => 'Quiz non trouvé'], 404);
+        }
+
+        return response()->json($quiz);
     }
 
     public function update(Request $request, Quiz $quiz)
