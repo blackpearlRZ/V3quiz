@@ -32,7 +32,7 @@ Route::controller(AuthController::class)->group(function() {
 // Routes publiques
 Route::get('/quizzes', [QuizController::class, 'index']);
 Route::get('/quizzes/langage/{langageId}', [QuizController::class, 'getByLanguage']);
-Route::get('/quizzes/{quiz}', [QuizController::class, 'show']);
+Route::get('/quizzes/{quizId}', [QuizController::class, 'show']);
 
 // Questions
 Route::get('/quizzes/{quiz}/questions', [QuestionController::class, 'index']);

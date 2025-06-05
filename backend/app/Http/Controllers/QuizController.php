@@ -48,8 +48,9 @@ class QuizController extends Controller
         return response()->json($quiz, 201);
     }
 
-    public function show(Quiz $quiz)
+    public function show($id)
     {
+        $quiz = Quiz::find($id);
         return response()->json($quiz->load(['questions', 'questions.reponses']));
     }
 
