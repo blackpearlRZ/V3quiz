@@ -18,7 +18,7 @@ export default function Layout() {
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/register" element={<Register />} />
         <Route path="/quiz/langage/:langageId" element={<LangageQuizzesPage />} />
-        <Route path="/quiz/:id" element={<QuizDetailPage />} />
+        <Route path="/quizzes/:quizId" element={<QuizDetailPage />} />
         {/* Protected quiz routes */}
           {/* <Route path="/quiz/language/:language" element={<LanguageQuiz />} />
           <Route path="/quiz/:language/:quizId" element={<Quiz />} />

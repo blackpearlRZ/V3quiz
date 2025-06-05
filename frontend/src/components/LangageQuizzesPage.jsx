@@ -93,7 +93,7 @@ export default function LanguageQuizzesPage() {
                 <p>Niveau: {quiz.niveau}</p>
                 <p>Temps limite: {quiz.tempsLimite} min</p>
                 <p>{quiz.questions_count ?? quiz.questions?.length ?? 0} questions</p>
-                <Link to={`/quiz/${quiz.id}`} className="start-button">Commencer</Link>
+                <Link to={`/quizzes/${quiz.id}`} className="start-button">Commencer</Link>
               </div>
             ))}
           </div>
