@@ -22,7 +22,7 @@ class QuizController extends Controller
     public function getByLanguage($langauage)
     {
         try {
-            $quizzes = Quiz::where('langauage', $langauage)
+            $quizzes = Quiz::where('langage', $langauage)
                           ->withCount('questions')
                           ->get();
             
