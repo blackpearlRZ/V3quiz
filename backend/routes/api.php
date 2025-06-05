@@ -31,7 +31,7 @@ Route::controller(AuthController::class)->group(function() {
 
 // Routes publiques
 Route::get('/quizzes', [QuizController::class, 'index']);
-Route::get('/quizzes/langage/{langage}', [QuizController::class, 'getByLanguage']);
+Route::get('/quizzes/langage/{langageId}', [QuizController::class, 'getByLanguage']);
 Route::get('/quizzes/{quiz}', [QuizController::class, 'show']);
 
 // Questions
