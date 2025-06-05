@@ -7,19 +7,39 @@ use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
-    
     public function index()
     {
-        $quizzes = Quiz::all();
-        return response()->json($quizzes);
+        try {
+            return response()->json([
+                'quizzes' => Quiz::withCount('questions')->get()
+            ]);
+        } catch (\Exception $e) {
+            \Log::error($e);
+            return response()->json(['error' => 'Erreur du serveur'], 500);
+        }
     }
 
+    public function getByLanguage($langauage)
+    {
+        try {
+            $quizzes = Quiz::where('langauage', $langauage)
+                          ->withCount('questions')
+                          ->get();
+            
+            return response()->json([
+                'quizzes' => $quizzes
+            ]);
+        } catch (\Exception $e) {
+            \Log::error($e);
+            return response()->json(['error' => 'Erreur du serveur'], 500);
+        }
+    }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'titre' => 'required|string|max:255',
-            'langauage' => 'required|string|max:50', 
+            'langauage' => 'required|string|max:50',
             'niveau' => 'required|string|max:50',
             'tempsLimite' => 'required|integer|min:1',
         ]);
@@ -28,14 +48,10 @@ class QuizController extends Controller
         return response()->json($quiz, 201);
     }
 
-
-
     public function show(Quiz $quiz)
     {
-        return response()->json($quiz);
+        return response()->json($quiz->load(['questions', 'questions.reponses']));
     }
-
-
 
     public function update(Request $request, Quiz $quiz)
     {
@@ -49,7 +65,6 @@ class QuizController extends Controller
         $quiz->update($validated);
         return response()->json($quiz);
     }
-
 
     public function destroy(Quiz $quiz)
     {
