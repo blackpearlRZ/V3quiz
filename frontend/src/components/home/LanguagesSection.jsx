@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios'
+import { axiosClient } from "../../api/axios";
 
 const languages = [
   {
@@ -49,13 +49,17 @@ const languages = [
 
 export default function LanguageSection() {
   const [quizzes,setQuizzes] =useState([])
-  useEffect(()=>{
-    axios.get('http://localhost:8000/api/quizzes').
-    then(res=>{
-      setQuizzes(res.data)
-      console.log(res.data)
-    }).catch(err=>(console.log(err)))
-  },[])
+ useEffect(() => {
+    axiosClient.get('/api/quizzes') 
+      .then(res => {
+        setQuizzes(res.data);
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <section className="language-section">
       <div className="container">
