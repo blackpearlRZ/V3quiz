@@ -1,111 +1,105 @@
-import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { axiosClient } from "../api/axios";
 
-export default function LangageQuizzesPage() {
+const languages = [
+  {
+    id: "html",
+    name: "HTML",
+    icon: "🌐",
+    description: "Maîtrisez la structure des pages web avec nos quiz HTML.",
+    colorClass: "html",
+  },
+  {
+    id: "css",
+    name: "CSS",
+    icon: "🎨",
+    description: "Testez vos connaissances en design et mise en page CSS.",
+    colorClass: "css",
+  },
+  {
+    id: "javascript",
+    name: "JavaScript",
+    icon: "⚡",
+    description: "Devenez expert en JavaScript, le langage du web interactif.",
+    colorClass: "javascript",
+  },
+  {
+    id: "python",
+    name: "Python",
+    icon: "🐍",
+    description: "Développez vos compétences en Python, un langage polyvalent.",
+    colorClass: "python",
+  },
+  {
+    id: "react",
+    name: "React",
+    icon: "⚛️",
+    description: "Devenez un expert des composants et du state management.",
+    colorClass: "react",
+  },
+  {
+    id: "php",
+    name: "PHP",
+    icon: "🐘",
+    description: "Maîtrisez le développement back-end avec nos quiz PHP.",
+    colorClass: "php",
+  },
+];
+
+export default function LanguageQuizzesPage() {
   const { langageId } = useParams();
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [langageInfo, setLangageInfo] = useState(null);
 
-  // Map of language information
-  const languagesMap = {
-    html: {
-      name: "HTML",
-      icon: "🌐",
-      description: "Maîtrisez la structure des pages web avec nos quiz HTML.",
-      colorClass: "html",
-    },
-    css: {
-      name: "CSS",
-      icon: "🎨",
-      description: "Testez vos connaissances en design et mise en page CSS.",
-      colorClass: "css",
-    },
-    javascript: {
-      name: "JavaScript",
-      icon: "⚡",
-      description: "Devenez expert en JavaScript, le langage du web interactif.",
-      colorClass: "javascript",
-    },
-    python: {
-      name: "Python",
-      icon: "🐍",
-      description: "Développez vos compétences en Python, un langage polyvalent.",
-      colorClass: "python",
-    },
-    react: {
-      name: "React",
-      icon: "⚛️",
-      description: "Devenez un expert des composants et du state management.",
-      colorClass: "react",
-    },
-    php: {
-      name: "PHP",
-      icon: "🐘",
-      description: "Maîtrisez le développement back-end avec nos quiz PHP.",
-      colorClass: "php",
-    },
-  };
+  const currentLanguage = languages.find((lang) => lang.id === langageId);
 
   useEffect(() => {
-    // Set the current language info
-    setLangageInfo(languagesMap[langageId]);
-
-    // Fetch quizzes for this language
-    const fetchQuizzes = async () => {
-      try {
-        const response = await axiosClient.get(`/quizzes/langage/${langageId}`);
-        setQuizzes(response.data.quizzes);
-      } catch (err) {
-        setError(err.response?.data?.error || 'Erreur lors du chargement des questionnaires');
-      } finally {
+    axiosClient.get('/api/quizzes')
+      .then((res) => {
+        const filtered = res.data.quizzes.filter(
+          (quiz) => quiz.langage === langageId
+        );
+        console.log(res.data);
+        setQuizzes(filtered);
         setLoading(false);
-      }
-    };
-
-    fetchQuizzes();
+      })
+      .catch((err) => {
+        console.error("Erreur lors de la récupération des quizzes :", err);
+        setLoading(false);
+      });
   }, [langageId]);
 
-  if (loading) return <div className="loading">Chargement...</div>;
-  if (error) return <div className="error">Erreur: {error}</div>;
+  if (!currentLanguage) return <p>Langage non reconnu.</p>;
+
+  if (loading) return <p>Chargement...</p>;
 
   return (
-    <section className={`langage-quizzes-page ${langageInfo?.colorClass || ''}`}>
+    <section className={`language-quizzes-page ${currentLanguage.colorClass}`}>
       <div className="container">
         <div className="header">
-          <div className="langage-icon">
-            <span>{langageInfo?.icon}</span>
-          </div>
-          <h1>Questionnaires {langageInfo?.name}</h1>
-          <p>{langageInfo?.description}</p>
+          <div className="langage-icon">{currentLanguage.icon}</div>
+          <h1>Quiz {currentLanguage.name}</h1>
+          <p>{currentLanguage.description}</p>
         </div>
 
         {quizzes.length === 0 ? (
-          <div className="no-quizzes">
-            <p>Aucun questionnaire disponible pour ce langage actuellement.</p>
-            <Link to="/quiz" className="back-link">
-              ← Retour aux langages
-            </Link>
-          </div>
+          <p>Aucun quiz trouvé pour ce langage.</p>
         ) : (
           <div className="quizzes-grid">
             {quizzes.map((quiz) => (
               <div key={quiz.id} className="quiz-card">
                 <h3>{quiz.titre}</h3>
-                <div className="quiz-meta">
-                  <span className="level">Niveau: {quiz.niveau}</span>
-                  <span className="time">⏱️ {quiz.tempsLimite} min</span>
-                  <span className="questions">{quiz.questions_count} questions</span>
-                </div>
-                <Link to={`/quiz/${quiz.id}`} className="start-button">
-                  Commencer
-                </Link>
+                <p>Niveau: {quiz.niveau}</p>
+                <p>Temps limite: {quiz.tempsLimite} min</p>
+                <p>{quiz.questions_count ?? quiz.questions?.length ?? 0} questions</p>
+                <Link to={`/quiz/${quiz.id}`} className="start-button">Commencer</Link>
               </div>
             ))}
           </div>
         )}
+
+        <Link to="/quiz" className="back-link">← Retour aux langages</Link>
       </div>
     </section>
   );
