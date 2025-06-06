@@ -1,7 +1,9 @@
-# Node modules
+# Dependency directories
 node_modules/
+.pnp
+.pnp.js
 
-# Logs
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -10,23 +12,30 @@ pnpm-debug.log*
 # Build output
 dist/
 build/
+.out/
 
-# Vite cache
+# Cache directories
 .vite/
+.cache/
 
-# Local env files
-
+# Environment files
+.env
+.env.*
+!.env.example
 
 # System files
 .DS_Store
 Thumbs.db
 
-# Editor folders
+# Editor directories and files
 .vscode/
 .idea/
-
-# Optional: if you're using Mac/Linux and don't want to commit these
 *.swp
 *.swo
 *.swn
 *.bak
+
+# Framework-specific (uncomment if needed)
+# .next/        # Next.js
+# .nuxt/        # Nuxt.js
+# .svelte-kit/  # SvelteKit
