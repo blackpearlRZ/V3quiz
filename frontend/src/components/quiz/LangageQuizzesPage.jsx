@@ -90,7 +90,6 @@ export default function LanguageQuizzesPage() {
         level={quiz.level}
         questionCount={quiz.questionCount}
         duration={quiz.duration}
-        slug={quiz.slug}
       />
             ))}
           </div>
