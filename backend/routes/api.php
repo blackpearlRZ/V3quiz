@@ -34,10 +34,8 @@ Route::get('/quizzes', [QuizController::class, 'index']);
 Route::get('/quizzes/langage/{langageId}', [QuizController::class, 'getByLanguage']);
 Route::get('/quizzes/{id}', [QuizController::class, 'show']);
 // Questions
-Route::get('/quizzes/{quiz}/questions', [QuestionController::class, 'index']);
+Route::get('/quizzes/{quiz}/questions', [QuizController::class, 'index']);
 
-// Réponses
-Route::get('/questions/{question}/reponses', [ResponseController::class, 'index']);
 
 // Routes protégées (admin)
 Route::middleware(['auth', 'is_admin'])->group(function() {
@@ -47,12 +45,8 @@ Route::middleware(['auth', 'is_admin'])->group(function() {
     Route::delete('/quizzes/{quiz}', [QuizController::class, 'destroy']);
     
     // Questions
-    Route::post('/questions', [QuestionController::class, 'store']);
-    Route::put('/questions/{question}', [QuestionController::class, 'update']);
-    Route::delete('/questions/{question}', [QuestionController::class, 'destroy']);
-    
-    // Réponses
-    Route::post('/reponses', [ResponseController::class, 'store']);
-    Route::put('/reponses/{reponse}', [ResponseController::class, 'update']);
-    Route::delete('/reponses/{reponse}', [ResponseController::class, 'destroy']);
+    Route::post('/questions', [QuizController::class, 'store']);
+    Route::put('/questions/{question}', [QuizController::class, 'update']);
+    Route::delete('/questions/{question}', [QuizController::class, 'destroy']);
+
 });
