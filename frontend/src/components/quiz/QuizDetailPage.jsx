@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { axiosClient } from "../api/axios";
+import { axiosClient } from "../../api/axios";
 
 export default function QuizDetailPage() {
   const { quizId } = useParams();
