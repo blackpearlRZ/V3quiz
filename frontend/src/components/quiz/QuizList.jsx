@@ -160,17 +160,6 @@ const QuizList = () => {
       <div className="quiz-grid">
         {getQuizzesForTab().length > 0 ? (
           getQuizzesForTab().map((quiz) => <QuizCard key={quiz.id} {...quiz} />)
-      //     <QuizCard
-      //   key={quiz.id}
-      //   id={quiz.id}
-      //   title={quiz.title}
-      //   description={quiz.description}
-      //   language={quiz.language}
-      //   level={quiz.level}
-      //   questionCount={quiz.questionCount}
-      //   duration={quiz.duration}
-      //   slug={quiz.slug}
-      // />
         ) : (
           <div className="no-results">Aucun quiz ne correspond à vos critères.</div>
         )}

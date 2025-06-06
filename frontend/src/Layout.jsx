@@ -14,19 +14,12 @@ export default function Layout() {
   return (
     <div className="app-container">
       <Routes>
-        {/* Public routes */}
         <Route path="/" element={<Home />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/register" element={<Register />} />
         <Route path="/quiz" element={<QuizList />} />
         <Route path="/quiz/langage/:langageId" element={<LangageQuizzesPage />} />
         <Route path="/quizzes/:quizId" element={<QuizDetailPage />} />
-        {/* Protected quiz routes */}
-          {/* <Route path="/quiz/language/:language" element={<LanguageQuiz />} />
-          <Route path="/quiz/:language/results" element={<QuizResults />} /> */}
-          {/*<Route path="/dashboard" element={<Dashboard />} />*/}
-
-       
       </Routes>
     </div>
   );

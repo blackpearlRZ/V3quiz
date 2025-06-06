@@ -76,31 +76,25 @@ export default function LanguageQuizzesPage() {
 
   return (
     <section className={`language-quizzes-page ${currentLanguage.colorClass}`}>
-      <div className="container">
-        <div className="header">
-          <div className="langage-icon">{currentLanguage.icon}</div>
-          <h1>Quiz {currentLanguage.name}</h1>
-          <p>{currentLanguage.description}</p>
-        </div>
-
         {quizzes.length === 0 ? (
           <p>Aucun quiz trouvé pour ce langage.</p>
         ) : (
           <div className="quizzes-grid">
             {quizzes.map((quiz) => (
-              <div key={quiz.id} className="quiz-card">
-                <h3>{quiz.titre}</h3>
-                <p>Niveau: {quiz.niveau}</p>
-                <p>Temps limite: {quiz.tempsLimite} min</p>
-                <p>{quiz.questions_count ?? quiz.questions?.length ?? 0} questions</p>
-                <Link to={`/quizzes/${quiz.id}`} className="start-button">Commencer</Link>
-              </div>
+                       <QuizCard
+        key={quiz.id}
+        id={quiz.id}
+        title={quiz.title}
+        description={quiz.description}
+        language={quiz.language}
+        level={quiz.level}
+        questionCount={quiz.questionCount}
+        duration={quiz.duration}
+        slug={quiz.slug}
+      />
             ))}
           </div>
         )}
-
-        <Link to="/quiz" className="back-link">← Retour aux langages</Link>
-      </div>
     </section>
   );
 }
