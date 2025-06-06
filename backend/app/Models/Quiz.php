@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany; // Add this import
 
 class Quiz extends Model
 {
@@ -13,9 +14,8 @@ class Quiz extends Model
         'titre', 'langauage', 'niveau', 'tempsLimite'
     ];
 
-     public function questions(): HasMany
+    public function questions(): HasMany
     {
         return $this->hasMany(Question::class);
     }
-
 }

@@ -8,21 +8,23 @@ use Illuminate\Http\Request;
 class QuizController extends Controller
 {
     public function index()
-    {
-        try {
-            return response()->json([
-                'quizzes' => Quiz::withCount('questions')->get()
-            ]);
-        } catch (\Exception $e) {
-            \Log::error($e);
-            return response()->json(['error' => 'Erreur du serveur'], 500);
-        }
+{
+    try {
+        return response()->json([
+            'quizzes' => Quiz::with(['questions' => function($query) {
+                $query->select('id', 'quiz_id', /* other needed fields */);
+            }])->withCount('questions')->get()
+        ]);
+    } catch (\Exception $e) {
+        \Log::error($e);
+        return response()->json(['error' => 'Server error: ' . $e->getMessage()], 500);
     }
+}
 
-    public function getByLanguage($langauage)
+    public function getByLanguage($language)
     {
         try {
-            $quizzes = Quiz::where('langage', $langauage)
+            $quizzes = Quiz::where('langage', $language)
                           ->withCount('questions')
                           ->get();
             
