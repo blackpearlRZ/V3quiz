@@ -5,11 +5,6 @@ import Register from "./components/Auth/Register";
 import LangageQuizzesPage from "./components/quiz/LangageQuizzesPage";
 import QuizDetailPage from "./components/quiz/QuizDetailPage";
 import QuizList from "./components/quiz/QuizList";
-import QuizCard from "./components/quiz/QuizCard";
-//import LanguageQuiz from "./components/LanguageQuiz";
-//import Quiz from "./components/Quiz";
-//import QuizResults from "./components/QuizResults";
-
 
 export default function Layout() {
   return (
@@ -19,8 +14,8 @@ export default function Layout() {
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/register" element={<Register />} />
         <Route path="/quiz" element={<QuizList />} />
-        <Route path="/quiz/:langage" element={<QuizCard />} />
-        {/* <Route path="/quizzes/:quizId" element={<QuizDetailPage />} /> */}
+        <Route path="/quiz/:langage" element={<LangageQuizzesPage />} />
+        <Route path="/quiz/:langage/:quizId" element={<QuizDetailPage />} />
       </Routes>
     </div>
   );

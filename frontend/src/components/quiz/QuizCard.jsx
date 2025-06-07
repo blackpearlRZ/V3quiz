@@ -15,27 +15,27 @@ const getLevelColorClass = (level) => {
 
 export default function QuizCard({
   id,
-  title,
+  titre,
   description,
-  language,
-  level,
-  questionCount,
-  duration
+  langage,
+  niveau,
+  questions_count,
+  tempsLimite
 }) {
   return (
-    <Link to={`/quiz/${language}`} className="quiz-card-link">
+    <Link to={`/quiz/${id}`} className="quiz-card-link">
       <div className="quiz-card">
         <div className="quiz-card-content">
           <div className="badges">
-            <span className="badge soft">{language}</span>
-            <span className={getLevelColorClass(level)}>{level}</span>
+            <span className="badge soft">{langage}</span>
+            <span className={getLevelColorClass(niveau)}>{niveau}</span>
           </div>
-          <h3 className="quiz-title">{title}</h3>
+          <h3 className="quiz-title">{titre}</h3>
           <p className="quiz-description">{description}</p>
         </div>
         <div className="quiz-card-footer">
-          <span>{questionCount} questions</span>
-          <span>~{duration} min</span>
+          <span>{questions_count} questions</span>
+          <span>~{tempsLimite} min</span>
         </div>
       </div>
     </Link>

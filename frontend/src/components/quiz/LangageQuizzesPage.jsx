@@ -55,7 +55,7 @@ export default function LanguageQuizzesPage() {
   const currentLanguage = languages.find((lang) => lang.id === langageId);
 
   useEffect(() => {
-    axiosClient.get('/api/quizzes')
+    axiosClient.get('/quizzes')
       .then((res) => {
         const filtered = res.data.quizzes.filter(
           (quiz) => quiz.langage === langageId
@@ -81,16 +81,16 @@ export default function LanguageQuizzesPage() {
         ) : (
           <div className="quizzes-grid">
             {quizzes.map((quiz) => (
-                       <QuizCard
-        key={quiz.id}
-        id={quiz.id}
-        title={quiz.title}
-        description={quiz.description}
-        language={quiz.language}
-        level={quiz.level}
-        questionCount={quiz.questionCount}
-        duration={quiz.duration}
-      />
+                        <QuizCard
+    key={quiz.id}
+    id={quiz.id}
+    titre={quiz.titre}
+    description={quiz.description}
+    langage={quiz.langage}
+    niveau={quiz.niveau}
+    questions_count={quiz.questions_count}
+    tempsLimite={quiz.tempsLimite}
+  />
             ))}
           </div>
         )}

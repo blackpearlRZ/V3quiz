@@ -11,7 +11,7 @@ export default function QuizDetailPage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axiosClient.get(`/api/quizzes/${quizId}`)
+    axiosClient.get(`/quizzes/${quizId}`)
       .then(res => {
         setQuiz(res.data);
         console.log(res.data)
