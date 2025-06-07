@@ -11,7 +11,7 @@ class Quiz extends Model
     use HasFactory;
 
     protected $fillable = [
-        'titre', 'langauage', 'niveau', 'tempsLimite'
+        'titre', 'langage', 'niveau', 'tempsLimite'
     ];
 
     public function questions(): HasMany

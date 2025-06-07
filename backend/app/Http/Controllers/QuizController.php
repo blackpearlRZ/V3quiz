@@ -21,21 +21,26 @@ class QuizController extends Controller
     }
 }
 
-    public function getByLanguage($language)
-    {
-        try {
-            $quizzes = Quiz::where('langage', $language)
-                          ->withCount('questions')
-                          ->get();
-            
-            return response()->json([
-                'quizzes' => $quizzes
-            ]);
-        } catch (\Exception $e) {
-            \Log::error($e);
-            return response()->json(['error' => 'Erreur du serveur'], 500);
+   public function getByLanguage($langage)
+{
+    try {
+        $validLanguages = ['html', 'css', 'javascript', 'python', 'react', 'php'];
+        if (!in_array($language, $validLanguages)) {
+            return response()->json(['error' => 'Langage non reconnu.'], 400);
         }
+
+        $quizzes = Quiz::where('langage', $language)
+                      ->withCount('questions')
+                      ->get();
+
+        return response()->json([
+            'quizzes' => $quizzes
+        ]);
+    } catch (\Exception $e) {
+        \Log::error($e);
+        return response()->json(['error' => 'Erreur du serveur'], 500);
     }
+}
 
     public function store(Request $request)
     {
