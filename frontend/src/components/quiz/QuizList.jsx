@@ -1,90 +1,100 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import QuizCard from "./QuizCard";
-
+import { axiosClient } from "../../api/axios";
 // Mock data
-const quizzes = [
+/*const quizzes = [
   {
     id: "1",
-    title: "Les bases du HTML5",
+    titre: "Les bases du HTML5",
     description: "Testez vos connaissances sur les fondamentaux du HTML5",
-    language: "HTML",
-    level: "débutant",
-    questionCount: 20,
-    duration: 15,
-    slug: "bases-html5",
+    langage: "HTML",
+    niveau: "débutant",
+    questions: 20,
+  
   },
   {
     id: "2",
-    title: "CSS Flexbox & Grid",
+    titre: "CSS Flexbox & Grid",
     description: "Maîtrisez-vous les layouts modernes en CSS ?",
-    language: "CSS",
-    level: "intermédiaire",
-    questionCount: 15,
+    langage: "CSS",
+    niveau: "intermédiaire",
+    questions_count: 15,
     duration: 12,
     slug: "css-flexbox-grid",
   },
   {
     id: "3",
-    title: "JavaScript - Concepts avancés",
+    titre: "JavaScript - Concepts avancés",
     description: "Les closures, promesses et le paradigme fonctionnel",
-    language: "JavaScript",
-    level: "avancé",
-    questionCount: 25,
+    langage: "JavaScript",
+    niveau: "avancé",
+    questions_count: 25,
     duration: 30,
     slug: "js-avance",
   },
   {
     id: "4",
-    title: "Python pour débutants",
+    titre: "Python pour débutants",
     description: "Les bases de la syntaxe Python et les structures de données",
-    language: "Python",
-    level: "débutant",
-    questionCount: 20,
+    langage: "Python",
+    niveau: "débutant",
+    questions_count: 20,
     duration: 15,
     slug: "python-debutants",
   },
   {
     id: "5",
-    title: "React - Les fondamentaux",
+    titre: "React - Les fondamentaux",
     description: "Components, props, state et le cycle de vie",
-    language: "React",
-    level: "intermédiaire",
-    questionCount: 18,
+    langage: "React",
+    niveau: "intermédiaire",
+    questions_count: 18,
     duration: 20,
     slug: "react-fondamentaux",
   },
   {
     id: "6",
-    title: "PHP & MySQL",
+    titre: "PHP & MySQL",
     description: "Interactions entre PHP et les bases de données",
-    language: "PHP",
-    level: "intermédiaire",
-    questionCount: 22,
+    langage: "PHP",
+    niveau: "intermédiaire",
+    questions_count: 22,
     duration: 25,
     slug: "php-mysql",
   },
-];
+];*/
 
-const levels = ["débutant", "intermédiaire", "avancé"];
-const languages = ["HTML", "CSS", "JavaScript", "Python", "React", "PHP"];
+const niveaus = ["débutant", "intermédiaire", "avancé"];
+const langages = ["html", "css", "javascript", "python", "react", "php"];
 
 const QuizList = () => {
+  const [quizzes, setQuizzes] = useState([]);
   const [activeTab, setActiveTab] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedLevel, setSelectedLevel] = useState();
-  const [selectedLanguage, setSelectedLanguage] = useState();
+  const [selectedniveau, setSelectedniveau] = useState();
+  const [selectedlangage, setSelectedlangage] = useState();
+
+  useEffect(() => {
+    axiosClient.get('/api/quizzes')
+    .then(response => {
+      setQuizzes(response.data.quizzes);
+      console.log(response.data)})
+    .catch(err => {
+      console.log('error fetching quizzes', err)
+    })
+  },[])
 
   const filteredQuizzes = quizzes.filter((quiz) => {
-    const matchesSearch = quiz.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = quiz.titre.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           quiz.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLevel = selectedLevel ? quiz.level === selectedLevel : true;
-    const matchesLanguage = selectedLanguage ? quiz.language === selectedLanguage : true;
-    return matchesSearch && matchesLevel && matchesLanguage;
+    const matchesniveau = selectedniveau ? quiz.niveau === selectedniveau : true;
+    const matcheslangage = selectedlangage ? quiz.langage === selectedlangage : true;
+    return matchesSearch && matchesniveau && matcheslangage;
   });
 
   const clearFilters = () => {
-    setSelectedLevel();
-    setSelectedLanguage();
+    setSelectedniveau();
+    setSelectedlangage();
     setSearchTerm("");
   };
 
@@ -130,28 +140,28 @@ const QuizList = () => {
           />
 
           <select
-            value={selectedLanguage || ""}
-            onChange={(e) => setSelectedLanguage(e.target.value || undefined)}
+            value={selectedlangage || ""}
+            onChange={(e) => setSelectedlangage(e.target.value || undefined)}
             className="filter-select"
           >
             <option value="">Langage</option>
-            {languages.map((lang) => (
+            {langages.map((lang) => (
               <option key={lang} value={lang}>{lang}</option>
             ))}
           </select>
 
           <select
-            value={selectedLevel || ""}
-            onChange={(e) => setSelectedLevel(e.target.value || undefined)}
+            value={selectedniveau || ""}
+            onChange={(e) => setSelectedniveau(e.target.value || undefined)}
             className="filter-select"
           >
             <option value="">Niveau</option>
-            {levels.map((level) => (
-              <option key={level} value={level}>{level.charAt(0).toUpperCase() + level.slice(1)}</option>
+            {niveaus.map((niveau) => (
+              <option key={niveau} value={niveau}>{niveau.charAt(0).toUpperCase() + niveau.slice(1)}</option>
             ))}
           </select>
 
-          {(selectedLevel || selectedLanguage || searchTerm) && (
+          {(selectedniveau || selectedlangage || searchTerm) && (
             <button className="clear-button" onClick={clearFilters}>Effacer filtres</button>
           )}
         </div>

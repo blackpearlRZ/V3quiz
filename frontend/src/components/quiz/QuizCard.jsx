@@ -20,10 +20,10 @@ export default function QuizCard({
   langage,
   niveau,
   questions_count,
-  tempsLimite
+  duration
 }) {
   return (
-    <Link to={`/quiz/${id}`} className="quiz-card-link">
+    <Link to={`/quiz/${langage}`} className="quiz-card-link">
       <div className="quiz-card">
         <div className="quiz-card-content">
           <div className="badges">
@@ -35,7 +35,7 @@ export default function QuizCard({
         </div>
         <div className="quiz-card-footer">
           <span>{questions_count} questions</span>
-          <span>~{tempsLimite} min</span>
+          <span>~{duration} min</span>
         </div>
       </div>
     </Link>

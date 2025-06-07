@@ -3,61 +3,124 @@ import { useParams, useNavigate } from "react-router-dom";
 import { axiosClient } from "../../api/axios";
 
 export default function QuizDetailPage() {
-  const { quizId } = useParams();
+  const { langage } = useParams();
   const navigate = useNavigate();
 
-  const [quiz, setQuiz] = useState(null);
+  const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axiosClient.get(`/quizzes/${quizId}`)
-      .then(res => {
-        setQuiz(res.data);
-        console.log(res.data)
+    const fetchQuiz = async () => {
+      try {
+        setLoading(true);
+        const response = await axiosClient.get(`/api/quizzes/langage/${langage}`);
+        setQuizzes(response.data.quizzes);
+      } catch (err) {
+        console.error("Error fetching quiz:", err);
+        setError(err.response?.data?.error || "Failed to load quiz");
+      } finally {
         setLoading(false);
-      })
-      .catch(err => {
-        console.error("Erreur lors de la récupération du quiz :", err);
-        setError("Impossible de charger le quiz.");
-        setLoading(false);
-      });
-  }, [quizId]);
+      }
+    };
 
-  if (loading) return <div>Chargement...</div>;
+    fetchQuiz();
+  }, [langage]);
 
-  if (error) return <div className="error">{error}</div>;
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Loading quiz...</p>
+      </div>
+    );
+  }
 
-  if (!quiz) return <div>Aucun quiz trouvé.</div>;
+  if (error) {
+    return (
+      <div className="error-container">
+        <h3>Error</h3>
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()}>Try Again</button>
+      </div>
+    );
+  }
+
+  if (quizzes.length === 0) {
+    return (
+      <div className="empty-state">
+        <h3>No Quiz Found</h3>
+        <p>No quizzes available for {langage} language</p>
+        <button onClick={() => navigate(-1)}>Go Back</button>
+      </div>
+    );
+  }
+
+  // Assuming we show the first quiz for this language
+  const quiz = quizzes[0];
 
   return (
     <section className="quiz-detail">
       <div className="container">
-        <h2>{quiz.titre}</h2>
-        <p><strong>Langage :</strong> {quiz.langage}</p>
-        <p><strong>Niveau :</strong> {quiz.niveau}</p>
-        <p><strong>Temps limite :</strong> {quiz.tempsLimite} minutes</p>
-        <hr />
+        <h1 className="quiz-title">{quiz.titre}</h1>
+        
+        <div className="quiz-meta">
+          <div className="meta-item">
+            <span className="meta-label">Language:</span>
+            <span className="meta-value">{quiz.langage}</span>
+          </div>
+          <div className="meta-item">
+            <span className="meta-label">Level:</span>
+            <span className="meta-value">{quiz.niveau}</span>
+          </div>
+          <div className="meta-item">
+            <span className="meta-label">Time Limit:</span>
+            <span className="meta-value">{quiz.tempsLimite} minutes</span>
+          </div>
+          <div className="meta-item">
+            <span className="meta-label">Questions:</span>
+            <span className="meta-value">{quiz.questions_count}</span>
+          </div>
+        </div>
 
-        <h3>Questions ({quiz.questions.length})</h3>
-        <ol>
-          {quiz.questions.map((question, index) => (
-            <li key={question.id} className="question-item">
-              <p><strong>{question.enonce}</strong></p>
-              <ul>
-                {question.reponses.map((rep) => (
-                  <li key={rep.id}>
-                    {rep.texte}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ol>
+        <div className="quiz-questions">
+          <h2>Questions</h2>
+          <ol className="questions-list">
+            {quiz.questions?.map((question) => (
+              <li key={question.id} className="question-item">
+                <h3 className="question-text">{question.enonce}</h3>
+                {question.reponses?.length > 0 && (
+                  <ul className="answers-list">
+                    {question.reponses.map((rep) => (
+                      <li 
+                        key={rep.id} 
+                        className={`answer-item ${rep.correcte ? 'correct-answer' : ''}`}
+                      >
+                        {rep.texte}
+                        {rep.correcte && <span className="correct-badge">Correct</span>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ol>
+        </div>
 
-        <button onClick={() => navigate(-1)} style={{ marginTop: "20px" }}>
-          Retour
-        </button>
+        <div className="quiz-actions">
+          <button 
+            className="btn btn-primary"
+            onClick={() => navigate(`/quiz/${quiz.id}/start`)}
+          >
+            Start Quiz
+          </button>
+          <button 
+            className="btn btn-secondary"
+            onClick={() => navigate(-1)}
+          >
+            Back to List
+          </button>
+        </div>
       </div>
     </section>
   );
