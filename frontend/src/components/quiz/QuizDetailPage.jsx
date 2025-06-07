@@ -9,6 +9,10 @@ export default function QuizDetailPage() {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [submitted, setSubmitted] = useState(false);
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [score, setScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(0);
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -26,6 +30,74 @@ export default function QuizDetailPage() {
 
     fetchQuiz();
   }, [langage]);
+
+  useEffect(() => {
+    if (quizzes.length > 0) {
+      const quiz = quizzes[0];
+      if (quiz?.tempsLimite) {
+        const initialTime = quiz.tempsLimite * 60; // convert minutes to seconds
+        setTimeLeft(initialTime);
+      }
+    }
+  }, [quizzes]);
+
+  useEffect(() => {
+    if (submitted || timeLeft <= 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          handleSubmit(); // auto-submit when time is up
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft, submitted]);
+
+  const handleSelect = (questionId, reponseId) => {
+    setSelectedAnswers((prev) => {
+      const current = prev[questionId] || [];
+      return {
+        ...prev,
+        [questionId]: current.includes(reponseId)
+          ? current.filter((id) => id !== reponseId)
+          : [...current, reponseId],
+      };
+    });
+  };
+
+  const calculateScore = () => {
+    let total = 0;
+    const quiz = quizzes[0];
+
+    quiz.questions.forEach((question) => {
+      const correctIds = question.reponses
+        .filter((r) => r.estCorrecte)
+        .map((r) => r.id);
+
+      const selectedIds = selectedAnswers[question.id] || [];
+
+      const allCorrectSelected =
+        correctIds.every((id) => selectedIds.includes(id)) &&
+        selectedIds.every((id) => correctIds.includes(id));
+
+      if (allCorrectSelected) {
+        total += question.points * 0.1; // 10% of the question's points
+      }
+    });
+
+    setScore(total);
+    localStorage.setItem("quiz_score", total);
+  };
+
+  const handleSubmit = () => {
+    calculateScore();
+    setSubmitted(true);
+  };
 
   if (loading) {
     return (
@@ -56,26 +128,25 @@ export default function QuizDetailPage() {
     );
   }
 
-  // Assuming we show the first quiz for this language
   const quiz = quizzes[0];
 
   return (
     <section className="quiz-detail">
-      <div className="container">
-        <h1 className="quiz-title">{quiz.titre}</h1>
-        
+      <div className="quiz-detailcontainer">
+        <h1 className="quiz-detail-title">{quiz.titre}</h1>
+
         <div className="quiz-meta">
           <div className="meta-item">
-            <span className="meta-label">Language:</span>
+            <span className="meta-label">Langage:</span>
             <span className="meta-value">{quiz.langage}</span>
           </div>
           <div className="meta-item">
-            <span className="meta-label">Level:</span>
+            <span className="meta-label">Niveau:</span>
             <span className="meta-value">{quiz.niveau}</span>
           </div>
           <div className="meta-item">
-            <span className="meta-label">Time Limit:</span>
-            <span className="meta-value">{quiz.tempsLimite} minutes</span>
+            <span className="meta-label">Temps limite:</span>
+            <span className="meta-value">{Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, "0")} minutes</span>
           </div>
           <div className="meta-item">
             <span className="meta-label">Questions:</span>
@@ -88,18 +159,45 @@ export default function QuizDetailPage() {
           <ol className="questions-list">
             {quiz.questions?.map((question) => (
               <li key={question.id} className="question-item">
-                <h3 className="question-text">{question.enonce}</h3>
+                <h3 className="question-text">
+                  {question.enonce} ({question.points} pts)
+                </h3>
                 {question.reponses?.length > 0 && (
                   <ul className="answers-list">
-                    {question.reponses.map((rep) => (
-                      <li 
-                        key={rep.id} 
-                        className={`answer-item ${rep.correcte ? 'correct-answer' : ''}`}
-                      >
-                        {rep.texte}
-                        {rep.correcte && <span className="correct-badge">Correct</span>}
-                      </li>
-                    ))}
+                    {question.reponses.map((rep) => {
+                      const isChecked =
+                        selectedAnswers[question.id]?.includes(rep.id) || false;
+
+                      return (
+                        <li
+                          key={rep.id}
+                          className={`answer-item ${
+                            submitted && rep.estCorrecte ? "Correste" : ""
+                          }`}
+                        >
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={() =>
+                                !submitted && handleSelect(question.id, rep.id)
+                              }
+                              disabled={submitted}
+                            />
+                            {rep.texte}
+                            {submitted && (
+                              <span
+                                className={`answer-badge ${
+                                  rep.estCorrecte ? "correct" : "incorrect"
+                                }`}
+                              >
+                                {rep.estCorrecte ? " (Correct)" : " (Faux)"}
+                              </span>
+                            )}
+                          </label>
+                        </li>
+                      );
+                    })}
                   </ul>
                 )}
               </li>
@@ -107,15 +205,29 @@ export default function QuizDetailPage() {
           </ol>
         </div>
 
+        {submitted && (
+            <div className="score-board">
+              <h3>Your Score: {score.toFixed(2)} points</h3>
+              <button
+                className="btn btn-secondary"
+                onClick={() => {
+                  localStorage.removeItem("quiz_score");
+                  setScore(0);
+                }}
+              >
+                Reset Score
+              </button>
+            </div>
+          )}
+
         <div className="quiz-actions">
-          <button 
-            className="btn btn-primary"
-            onClick={() => navigate(`/quiz/${quiz.id}/start`)}
-          >
-            Start Quiz
-          </button>
-          <button 
-            className="btn btn-secondary"
+          {!submitted && (
+            <button className="btn btn-primary-1" onClick={handleSubmit}>
+              resultats
+            </button>
+          )}
+          <button
+            className="btn btn-primary-1"
             onClick={() => navigate(-1)}
           >
             Back to List
