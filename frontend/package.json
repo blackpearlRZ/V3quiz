@@ -1,5 +1,6 @@
 {
   "name": "frontend",
+<<<<<<< HEAD
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -23,5 +24,29 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.5",
     "vite": "^6.3.5"
+=======
+  "version": "1.0.0",
+  "main": "vite.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.5.1",
+    "vite": "^6.3.5"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.8",
+    "axios": "^1.9.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.2"
+>>>>>>> fd533fe134ad52b1ca2e20f19ae4dcc2b2edfdc6
   }
 }
