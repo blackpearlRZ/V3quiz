@@ -11,38 +11,54 @@ class StatistiqueController extends Controller
     
     public function index()
     {
-        $statistiques = Statistique::with('user')->get();
+        $statistiques = Statistique::with('utilisateur')->get();
         return response()->json($statistiques);
     }
 
     
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'utilisateur_id' => 'required|exists:users,id',
-            'langage' => 'required|string|max:50',
-            'reussiteMoyenne' => 'required|numeric|between:0,100',
-            'tempsMoyen' => 'required|integer|min:0', 
-        ]);
+{
+    $validated = $request->validate([
+        'utilisateur_id' => 'required|exists:utilisateurs,id',
+        'quiz_id' => 'required|exists:quizzes,id',
+        'langage' => 'required|string|max:50',
+        'reussiteMoyenne' => 'required|numeric|between:0,100',
+        'tempsMoyen' => 'required|integer|min:0',
+        'total_questions' => 'required|integer|min:1',
+        'questions_correctes' => 'required|integer|min:0',
+        'temps_total' => 'required|integer|min:0' // Changed min to 0
+    ]);
 
+    try {
         $statistique = Statistique::create($validated);
         return response()->json($statistique, 201);
+    } catch (\Exception $e) {
+        \Log::error('Failed to save statistics: '.$e->getMessage());
+        return response()->json([
+            'message' => 'Failed to save statistics',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
 
-    
-    public function show(Statistique $statistique)
-    {
-        return response()->json($statistique->load(['user', 'questions', 'reponses']));
-    }
+// Update show method to match your relationships
+        public function show(Statistique $statistique)
+        {
+            return response()->json($statistique->load(['utilisateur', 'quiz']));
+        }
 
     
     public function update(Request $request, Statistique $statistique)
     {
         $validated = $request->validate([
-            'utilisateur_id' => 'sometimes|required|exists:users,id',
-            'langage' => 'sometimes|required|string|max:50',
-            'reussiteMoyenne' => 'sometimes|required|numeric|between:0,100',
-            'tempsMoyen' => 'sometimes|required|integer|min:0',
+            'utilisateur_id' => 'required|exists:utilisateurs,id',
+            'quiz_id' => 'required|exists:quizzes,id',
+            'langage' => 'required|string|max:50',
+            'reussiteMoyenne' => 'required|numeric|between:0,100',
+            'tempsMoyen' => 'required|integer|min:0',
+            'total_questions' => 'required|integer|min:1',
+            'questions_correctes' => 'required|integer|min:0',
+            'temps_total' => 'required|integer|min:1'
         ]);
 
         $statistique->update($validated);

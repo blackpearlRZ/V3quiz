@@ -2,14 +2,32 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Statistique;
 
-class Utilisateur extends Model
+class Utilisateur extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
-    protected $fillable = ['nom', 'prenom', 'email','motDePasse', 'motDePasseHash', 'dateInscription', 'statut'];
+    protected $table = 'utilisateurs';
 
-    
+    protected $fillable = [
+        'nom', 'prenom', 'email', 'motDePasseHash',
+    ];
+
+    protected $hidden = [
+        'motDePasseHash',
+    ];
+
+    public function getAuthPassword()
+    {
+        return $this->motDePasseHash;
+    }
+
+    public function statistiques(){
+        return $this->hasMnay(Statistique::class, 'utilisateur_id');
+    }
 }
