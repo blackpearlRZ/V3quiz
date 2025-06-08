@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import QuizCard from "./QuizCard";
 import { axiosClient } from "../../api/axios";
 
-const niveaus = ["beginner", "intermediate", "advanced"];
+const niveaus = ["débutant", "intermédiaire", "avancé"];
 const langages = ["html", "css", "javascript", "python", "react", "php"];
 
 const QuizList = () => {
