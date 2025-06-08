@@ -14,6 +14,10 @@ class Quiz extends Model
         'titre', 'langage', 'niveau', 'tempsLimite'
     ];
 
+    public function statistiques(){
+        return $this->hasMany(Statistiques::class);
+    }
+
     public function questions(): HasMany
     {
         return $this->hasMany(Question::class);

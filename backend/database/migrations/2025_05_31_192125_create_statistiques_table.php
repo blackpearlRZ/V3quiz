@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('statistiques', function (Blueprint $table) {
             $table->foreignId('utilisateur_id ')->constrained('utilisateurs', 'id');
+            $table->foreignId('quiz_id ')->constrained('quizzes', 'id');
             $table->string('langage');
             $table->float('reussiteMoyenne');
             $table->integer('tempsMoyen');
