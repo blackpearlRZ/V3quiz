@@ -38,6 +38,163 @@
     color: black;
     font-weight: 400;
 }
+
+.nav-item-accueil,
+.nav-item-quiz,
+.nav-item-dashboard {
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+/* Link styles */
+.nav-item-accueil a,
+.nav-item-quiz a,
+.nav-item-dashboard a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+/* Unique animations for each item */
+
+/* Accueil - Bubble animation */
+.nav-item-accueil a::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background-color: #9B7EBD;
+  transition: all 0.3s ease;
+}
+
+.nav-item-accueil a:hover::before {
+  width: 100%;
+}
+
+/* Quiz - Underline from center */
+.nav-item-quiz a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #F49BAB;
+  transform: translateX(-50%);
+  transition: all 0.3s ease;
+}
+
+.nav-item-quiz a:hover::after {
+  width: 100%;
+}
+
+/* Dashboard - Diagonal swipe */
+.nav-item-dashboard a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 50%, rgba(155, 126, 189, 0.1) 50%);
+  transition: all 0.4s ease;
+  z-index: -1;
+  transform: skewX(-15deg);
+}
+
+.nav-item-dashboard a:hover::before {
+  width: 100%;
+}
+
+/* Active state styles */
+.nav-item-accueil a.active {
+  color: #9B7EBD;
+  font-weight: 600;
+}
+
+.nav-item-quiz a.active {
+  color: #F49BAB;
+  font-weight: 600;
+}
+
+.nav-item-dashboard a.active {
+  color: #9B7EBD;
+  font-weight: 600;
+}
+
+/* Active state animations */
+.nav-item-accueil a.active::after {
+  content: '•';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #9B7EBD;
+  animation: bounce 0.8s infinite alternate;
+}
+
+.nav-item-quiz a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #F49BAB, #FFE1E0);
+  animation: pulse 1.5s infinite;
+}
+
+.nav-item-dashboard a.active::before {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #9B7EBD;
+  animation: widthPulse 2s infinite;
+}
+
+/* Keyframe animations */
+@keyframes bounce {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes widthPulse {
+  0% {
+    width: 100%;
+  }
+  50% {
+    width: 80%;
+  }
+  100% {
+    width: 100%;
+  }
+}
 /*Login section*/
 .login-card {
   max-width: 400px;

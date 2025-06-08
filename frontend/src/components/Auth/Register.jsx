@@ -1,21 +1,34 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../service/AuthService"; // adapte le chemin si besoin
 
 export default function Register() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName,  setLastName] = useState("");
-  const [email,     setEmail] = useState("");
-  const [password,  setPassword] = useState("");
+  const [prenom, setPrenom] = useState("");
+  const [nom, setNom] = useState("");
+  const [email, setEmail] = useState("");
+  const [motDePasse, setMotDePasse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    // simulate registration
-    setTimeout(() => {
+    setError("");
+
+    try {
+      await register({ nom, prenom, email, motDePasse });
       setIsLoading(false);
-      alert("Inscription réussie !");
-    }, 1000);
+      navigate("/auth/login"); 
+    } catch (err) {
+      setIsLoading(false);
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Erreur lors de l’inscription.");
+      }
+    }
   };
 
   return (
@@ -32,8 +45,8 @@ export default function Register() {
             <input
               id="firstName"
               placeholder="Jean"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              value={prenom}
+              onChange={(e) => setPrenom(e.target.value)}
               required
             />
           </div>
@@ -42,8 +55,8 @@ export default function Register() {
             <input
               id="lastName"
               placeholder="Dupont"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              value={nom}
+              onChange={(e) => setNom(e.target.value)}
               required
             />
           </div>
@@ -66,14 +79,16 @@ export default function Register() {
           <input
             id="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={motDePasse}
+            onChange={(e) => setMotDePasse(e.target.value)}
             required
           />
           <p className="form-note">
             Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule et un chiffre.
           </p>
         </div>
+
+        {error && <p className="error">{error}</p>}
 
         <button type="submit" className="submit-btn" disabled={isLoading}>
           {isLoading ? "Inscription en cours..." : "S'inscrire"}
