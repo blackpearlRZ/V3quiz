@@ -1,68 +1,6 @@
 import { useEffect, useState } from "react";
 import QuizCard from "./QuizCard";
 import { axiosClient } from "../../api/axios";
-// Mock data
-/*const quizzes = [
-  {
-    id: "1",
-    titre: "Les bases du HTML5",
-    description: "Testez vos connaissances sur les fondamentaux du HTML5",
-    langage: "HTML",
-    niveau: "débutant",
-    questions: 20,
-  
-  },
-  {
-    id: "2",
-    titre: "CSS Flexbox & Grid",
-    description: "Maîtrisez-vous les layouts modernes en CSS ?",
-    langage: "CSS",
-    niveau: "intermédiaire",
-    questions_count: 15,
-    duration: 12,
-    slug: "css-flexbox-grid",
-  },
-  {
-    id: "3",
-    titre: "JavaScript - Concepts avancés",
-    description: "Les closures, promesses et le paradigme fonctionnel",
-    langage: "JavaScript",
-    niveau: "avancé",
-    questions_count: 25,
-    duration: 30,
-    slug: "js-avance",
-  },
-  {
-    id: "4",
-    titre: "Python pour débutants",
-    description: "Les bases de la syntaxe Python et les structures de données",
-    langage: "Python",
-    niveau: "débutant",
-    questions_count: 20,
-    duration: 15,
-    slug: "python-debutants",
-  },
-  {
-    id: "5",
-    titre: "React - Les fondamentaux",
-    description: "Components, props, state et le cycle de vie",
-    langage: "React",
-    niveau: "intermédiaire",
-    questions_count: 18,
-    duration: 20,
-    slug: "react-fondamentaux",
-  },
-  {
-    id: "6",
-    titre: "PHP & MySQL",
-    description: "Interactions entre PHP et les bases de données",
-    langage: "PHP",
-    niveau: "intermédiaire",
-    questions_count: 22,
-    duration: 25,
-    slug: "php-mysql",
-  },
-];*/
 
 const niveaus = ["débutant", "intermédiaire", "avancé"];
 const langages = ["html", "css", "javascript", "python", "react", "php"];
@@ -85,13 +23,18 @@ const QuizList = () => {
   },[])
 
   const filteredQuizzes = quizzes.filter((quiz) => {
-    const matchesSearch = quiz.titre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          quiz.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesniveau = selectedniveau ? quiz.niveau === selectedniveau : true;
-    const matcheslangage = selectedlangage ? quiz.langage === selectedlangage : true;
-    return matchesSearch && matchesniveau && matcheslangage;
-  });
+  const titre = quiz.titre || "";
+  const description = quiz.description || "";
 
+  const matchesSearch =
+    titre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    description.toLowerCase().includes(searchTerm.toLowerCase());
+
+  const matchesniveau = selectedniveau ? quiz.niveau === selectedniveau : true;
+  const matcheslangage = selectedlangage ? quiz.langage === selectedlangage : true;
+
+  return matchesSearch && matchesniveau && matcheslangage;
+});
   const clearFilters = () => {
     setSelectedniveau();
     setSelectedlangage();
@@ -169,8 +112,13 @@ const QuizList = () => {
 
       <div className="quiz-grid">
         {getQuizzesForTab().length > 0 ? (
-          getQuizzesForTab().map((quiz) => <QuizCard key={quiz.id} {...quiz} />)
-        ) : (
+          getQuizzesForTab().map((quiz) => (
+              <QuizCard 
+                key={quiz.id} 
+                {...quiz}
+              />
+            ))
+                    ) : (
           <div className="no-results">Aucun quiz ne correspond à vos critères.</div>
         )}
       </div>
