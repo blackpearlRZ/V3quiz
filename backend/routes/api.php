@@ -25,9 +25,10 @@ Route::middleware('auth:sanctum')->get('/utilisateur', function (Request $reques
     return $request->user();
 });
 
-Route::get('/quizzes', [QuizController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/quizzes', [QuizController::class, 'index']);
+    Route::get('/statistiques', [StatistiqueController::class, 'index']);
     Route::post('/statistiques', [StatistiqueController::class, 'store']);
     Route::get('/quizzes/langage/{langage}', [QuizController::class, 'getByLangage']);
     Route::get('/quizzes/{id}', [QuizController::class, 'show']);

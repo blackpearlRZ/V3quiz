@@ -12,7 +12,7 @@ class QuestionSeeder extends Seeder
         $questions = [];
         
         // Generate 10 questions for each quiz (15 quizzes)
-        for ($quizId = 1; $quizId <= 15; $quizId++) {
+        for ($quizId = 1; $quizId <= 18; $quizId++) {
             $langage = $this->getLangage($quizId);
             $niveau = $this->getNiveau($quizId);
             
@@ -39,6 +39,7 @@ class QuestionSeeder extends Seeder
             3 => 'javascript',
             4 => 'php',
             5 => 'python',
+            6 => 'react'
         };
     }
 
@@ -130,7 +131,6 @@ class QuestionSeeder extends Seeder
                 "Qu'est-ce que les custom properties ?"
             ]
         ],
-        // Continue with other languages...
         'javascript' => [
             'débutant' => [
                 "Comment déclarer une variable ?",
@@ -243,6 +243,44 @@ class QuestionSeeder extends Seeder
                 "Comment utiliser les annotations ?",
                 "Qu'est-ce que ABC ?",
                 "Comment faire du multiprocessing ?"
+            ]
+            ],
+            'react' => [
+            'débutant' => [
+                "Qu'est-ce que ReactJS ?",
+                "Comment créer un composant React ?",
+                "Quelle méthode est appelée lors du rendu initial ?",
+                "Comment passer des données à un composant ?",
+                "Qu'est-ce que JSX ?",
+                "Comment rendre une liste d'éléments ?",
+                "Quelle est la syntaxe correcte pour un événement onClick ?",
+                "Comment gérer l'état local d'un composant ?",
+                "Quelle méthode est appelée après le rendu du composant ?",
+                "Comment importer React dans un fichier ?"
+            ],
+            'intermédiaire' => [
+                "Qu'est-ce qu'un Hook en React ?",
+                "Comment utiliser useState ?",
+                "Quelle est la différence entre props et state ?",
+                "Comment effectuer des effets secondaires ?",
+                "Qu'est-ce que le Virtual DOM ?",
+                "Comment optimiser les performances ?",
+                "Qu'est-ce que le contexte React ?",
+                "Comment utiliser useReducer ?",
+                "Quand utiliser useMemo ?",
+                "Comment créer un composant contrôlé ?"
+            ],
+            'avancé' => [
+                "Comment fonctionne le reconciler ?",
+                "Qu'est-ce que les Error Boundaries ?",
+                "Comment utiliser les Refs ?",
+                "Qu'est-ce que les Portals ?",
+                "Comment implémenter le code splitting ?",
+                "Qu'est-ce que les Higher-Order Components ?",
+                "Comment utiliser les Render Props ?",
+                "Qu'est-ce que Suspense ?",
+                "Comment tester les composants React ?",
+                "Comment optimiser le rendu avec useCallback ?"
             ]
         ]
     ];

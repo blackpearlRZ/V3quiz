@@ -26,7 +26,7 @@ class StatistiqueController extends Controller
         'tempsMoyen' => 'required|integer|min:0',
         'total_questions' => 'required|integer|min:1',
         'questions_correctes' => 'required|integer|min:0',
-        'temps_total' => 'required|integer|min:0' // Changed min to 0
+        'temps_total' => 'required|integer|min:0'
     ]);
 
     try {

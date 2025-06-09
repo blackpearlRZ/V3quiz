@@ -10,7 +10,7 @@ class ReponseSeeder extends Seeder
     public function run()
     {
         $reponses = [];
-        $questionCount = 150; 
+        $questionCount = 180; 
         
         for ($questionId = 1; $questionId <= $questionCount; $questionId++) {
             $quizId = ceil($questionId / 10);
@@ -241,7 +241,45 @@ class ReponseSeeder extends Seeder
                     9 => ["Abstract Base Class"],
                     10 => ["Toutes ces réponses"]
                 ]
+                ],
+                'react' => [
+            'débutant' => [
+                1 => ["Une bibliothèque JavaScript pour les interfaces utilisateur"],
+                2 => ["En créant une fonction ou une classe"],
+                3 => ["render()"],
+                4 => ["Via les props"],
+                5 => ["Syntaxe étendue de JavaScript"],
+                6 => ["Avec map()"],
+                7 => ["onClick={handleClick}"],
+                8 => ["Avec useState (hooks) ou this.state (classes)"],
+                9 => ["componentDidMount()"],
+                10 => ["import React from 'react';"]
+            ],
+            'intermédiaire' => [
+                1 => ["Fonction spéciale pour utiliser les fonctionnalités React"],
+                2 => ["const [state, setState] = useState(initialValue);"],
+                3 => ["Props sont immuables, state est mutable"],
+                4 => ["Avec useEffect"],
+                5 => ["Représentation légère du DOM réel"],
+                6 => ["Utiliser React.memo, useMemo, etc."],
+                7 => ["Système de partage de données globales"],
+                8 => ["const [state, dispatch] = useReducer(reducer, initialState);"],
+                9 => ["Pour mémoïser des calculs coûteux"],
+                10 => ["Composant dont la valeur est contrôlée par React"]
+            ],
+            'avancé' => [
+                1 => ["Algorithme de comparaison du Virtual DOM"],
+                2 => ["Composants qui capturent les erreurs JavaScript"],
+                3 => ["Avec useRef ou createRef"],
+                4 => ["Rendre des enfants dans un nœud DOM différent"],
+                5 => ["Avec React.lazy et Suspense"],
+                6 => ["Fonctions qui prennent un composant et retournent un nouveau composant"],
+                7 => ["Technique de partage de code entre composants"],
+                8 => ["Composant pour gérer les chargements asynchrones"],
+                9 => ["Avec Jest et React Testing Library"],
+                10 => ["Pour mémoïser des fonctions et éviter des rendus inutiles"]
             ]
+        ]
         ];
         
         return $answers[$langage][$niveau][$questionNum] ?? ["Réponse correcte"];
@@ -439,7 +477,45 @@ class ReponseSeeder extends Seeder
                     9 => ["Anonymous Block Class", "Async Base Class", "Attribute Based Class"],
                     10 => ["threading", "asyncio", "multithreading"]
                 ]
+                ],
+                'react' => [
+            'débutant' => [
+                1 => ["Un framework backend", "Un langage de programmation", "Une base de données"],
+                2 => ["Avec new Component()", "En utilisant Component.create()", "Avec React.makeComponent()"],
+                3 => ["componentDidMount()", "constructor()", "componentWillMount()"],
+                4 => ["Via le state", "Avec des variables globales", "Directement en modifiant le DOM"],
+                5 => ["Un préprocesseur CSS", "Un système de typage", "Un langage de template"],
+                6 => ["Avec forEach()", "Avec une boucle for", "Avec repeat()"],
+                7 => ["onClick=\"handleClick\"", "onClick=\"handleClick()\"", "onClick={this.handleClick}"],
+                8 => ["Avec setProps()", "Avec this.setLocalState()", "Avec useGlobal()"],
+                9 => ["componentWillMount()", "shouldComponentUpdate()", "componentWillUpdate()"],
+                10 => ["require('react');", "include React;", "using React;"]
+            ],
+            'intermédiaire' => [
+                1 => ["Méthode de cycle de vie", "Système de routage", "Type de composant"],
+                2 => ["const state = useState();", "let [state] = useState[];", "const state = useReactState();"],
+                3 => ["Props sont pour les classes, state pour les fonctions", "Aucune différence", "State est immuable, props mutable"],
+                4 => ["Avec useSideEffect", "Avec componentDidEffect", "Avec setEffect"],
+                5 => ["Le DOM côté serveur", "Un clone exact du DOM", "Un système de cache"],
+                6 => ["Utiliser forceUpdate()", "Éviter les hooks", "Toujours utiliser PureComponent"],
+                7 => ["Système de gestion d'état local", "Méthode de composition", "Type de prop"],
+                8 => ["const state = useReducer[];", "const [state] = useReducer();", "const reducer = useReducer(state);"],
+                9 => ["Pour gérer les effets secondaires", "Pour créer des références", "Pour optimiser le premier rendu"],
+                10 => ["Composant avec beaucoup d'état", "Composant qui utilise le contexte", "Composant fonctionnel"]
+            ],
+            'avancé' => [
+                1 => ["Méthode de rendu conditionnel", "Système de cache", "Processus de compilation"],
+                2 => ["Composants qui gèrent les styles", "Fonctions utilitaires", "Système de routage"],
+                3 => ["Avec useMemo", "Avec useContext", "Avec useCallback"],
+                4 => ["Composants flottants", "Système de notification", "Technique d'animation"],
+                5 => ["Avec React.split", "Avec Component.divide", "Avec import() dynamique"],
+                6 => ["Composants de haut niveau", "Composants de base", "Composants sans état"],
+                7 => ["Technique de rendu conditionnel", "Méthode de gestion d'état", "Système de typage"],
+                8 => ["Composant pour les erreurs", "Système de cache", "Méthode de débogage"],
+                9 => ["Avec Mocha et Chai", "Avec Selenium", "Avec Enzyme seul"],
+                10 => ["Pour créer des effets secondaires", "Pour gérer le contexte", "Pour créer des refs"]
             ]
+        ]
         ];
         
         return $wrongAnswers[$langage][$niveau][$questionNum] ?? ["Fausse réponse 1", "Fausse réponse 2", "Fausse réponse 3"];
@@ -453,6 +529,7 @@ class ReponseSeeder extends Seeder
             3 => 'javascript',
             4 => 'php',
             5 => 'python',
+            6 => 'react',
         };
     }
 

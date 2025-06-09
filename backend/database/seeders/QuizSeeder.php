@@ -109,6 +109,25 @@ class QuizSeeder extends Seeder
                 'niveau' => 'avancé',
                 'tempsLimite' => 30,
             ],
+            // ReactJS (3)
+            [
+                'titre' => 'ReactJS Débutant',
+                'langage' => 'react',
+                'niveau' => 'débutant',
+                'tempsLimite' => 20,
+            ],
+            [
+                'titre' => 'ReactJS Intermédiaire',
+                'langage' => 'react',
+                'niveau' => 'intermédiaire',
+                'tempsLimite' => 25,
+            ],
+            [
+                'titre' => 'ReactJS Avancé',
+                'langage' => 'react',
+                'niveau' => 'avancé',
+                'tempsLimite' => 30,
+            ],
         ];
 
         foreach ($quizzes as $quiz) {
