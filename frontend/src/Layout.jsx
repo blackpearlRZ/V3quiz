@@ -4,6 +4,7 @@ import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import QuizDetailPage from "./components/quiz/QuizDetailPage";
 import QuizList from "./components/quiz/QuizList";
+import StatisticsDashboard from "./components/dashboard/StatisticsDashboard";
 
 export default function Layout() {
   return (
@@ -14,6 +15,7 @@ export default function Layout() {
         <Route path="/auth/register" element={<Register />} />
         <Route path="/quiz" element={<QuizList />} />
         <Route path="/quiz/langage/:langage" element={<QuizDetailPage />} />
+        <Route path="/dashboard" element={<StatisticsDashboard/>}/>
       </Routes>
     </div>
   );

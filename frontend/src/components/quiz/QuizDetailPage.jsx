@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { axiosClient } from "../../api/axios";
+import { getCurrentUser } from "../service/AuthService"; // or your auth method
 
 export default function QuizDetailPage() {
   const { langage } = useParams();
@@ -94,10 +95,64 @@ export default function QuizDetailPage() {
     localStorage.setItem("quiz_score", total);
   };
 
-  const handleSubmit = () => {
-    calculateScore();
-    setSubmitted(true);
-  };
+  const handleSubmit = async () => {
+  calculateScore();
+  setSubmitted(true);
+
+  try {
+    const user = await getCurrentUser();
+    const quiz = quizzes[0];
+
+    if (user && user.id && quiz) {
+      const totalPoints = quiz.questions.reduce((total, q) => total + q.points, 0);
+      const reussiteMoyenne = totalPoints > 0 ? (score / totalPoints) * 100 : 0;
+      const tempsMoyen = quiz.tempsLimite ? 
+        (quiz.tempsLimite * 60) / quiz.questions.length : 0;
+
+      // Calculate correct answers count
+      let correctAnswersCount = 0;
+      quiz.questions.forEach((question) => {
+        const correctIds = question.reponses
+          .filter((r) => r.estCorrecte)
+          .map((r) => r.id);
+        const selectedIds = selectedAnswers[question.id] || [];
+        
+        const allCorrectSelected =
+          correctIds.every((id) => selectedIds.includes(id)) &&
+          selectedIds.every((id) => correctIds.includes(id));
+        
+        if (allCorrectSelected) {
+          correctAnswersCount++;
+        }
+      });
+
+      // Calculate total time taken (time limit minus remaining time)
+      const initialTime = quiz.tempsLimite * 60;
+      const timeTaken = initialTime - timeLeft;
+
+      const statsData = {
+        utilisateur_id: user.id,
+        quiz_id: quiz.id,
+        langage: quiz.langage,
+        reussiteMoyenne: parseFloat(reussiteMoyenne.toFixed(2)), // Ensure it's a number
+        tempsMoyen: Math.round(tempsMoyen),
+        total_questions: quiz.questions.length,
+        questions_correctes: correctAnswersCount,
+        temps_total: timeTaken
+      };
+
+      console.log('Sending statistics:', statsData); // Debug log
+
+      const response = await axiosClient.post('/api/statistiques', statsData);
+      console.log('Statistics saved:', response.data);
+    }
+  } catch (error) {
+    console.error("Error saving statistics:", error);
+    if (error.response) {
+      console.error("Server response:", error.response.data);
+    }
+  }
+};
 
   if (loading) {
     return (
@@ -206,19 +261,19 @@ export default function QuizDetailPage() {
         </div>
 
         {submitted && (
-            <div className="score-board">
-              <h3>Your Score: {score.toFixed(2)} points</h3>
-              <button
-                className="btn btn-secondary"
-                onClick={() => {
-                  localStorage.removeItem("quiz_score");
-                  setScore(0);
-                }}
-              >
-                Reset Score
-              </button>
-            </div>
-          )}
+          <div className="score-board">
+            <h3>Your Score: {score.toFixed(2)} points</h3>
+            <button
+              className="btn btn-secondary"
+              onClick={() => {
+                localStorage.removeItem("quiz_score");
+                setScore(0);
+              }}
+            >
+              Reset Score
+            </button>
+          </div>
+        )}
 
         <div className="quiz-actions">
           {!submitted && (

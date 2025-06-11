@@ -1,19 +1,32 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../service/AuthService"; // <-- adapter le chemin selon ton projet
 
 export default function Login() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [motDePasse, setMotDePasse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simule une requête de connexion
-    setTimeout(() => {
+    setError("");
+
+    try {
+      await login({ email, motDePasse });
       setIsLoading(false);
-      alert("Connexion réussie !");
-    }, 1000);
+      navigate("/"); // redirection après login
+    } catch (err) {
+      setIsLoading(false);
+      if (err.response && err.response.status === 401) {
+        setError("Email ou mot de passe incorrect.");
+      } else {
+        setError("Une erreur est survenue.");
+      }
+    }
   };
 
   return (
@@ -42,11 +55,13 @@ export default function Login() {
             id="password"
             type="password"
             placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={motDePasse}
+            onChange={(e) => setMotDePasse(e.target.value)}
             required
           />
         </div>
+
+        {error && <p className="error">{error}</p>}
 
         <button
           type="submit"
