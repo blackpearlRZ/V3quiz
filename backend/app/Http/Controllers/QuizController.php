@@ -15,7 +15,7 @@ class QuizController extends Controller
             ]);
         } catch (\Exception $e) {
             \Log::error($e);
-            return response()->json(['error' => 'Erreur du serveur'], 500);
+            return reponse()->json(['error' => 'Erreur du serveur'], 500);
         }
     }
 
