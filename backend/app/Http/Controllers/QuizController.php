@@ -8,32 +8,39 @@ use Illuminate\Http\Request;
 class QuizController extends Controller
 {
     public function index()
-    {
-        try {
-            return response()->json([
-                'quizzes' => Quiz::withCount('questions')->get()
-            ]);
-        } catch (\Exception $e) {
-            \Log::error($e);
-            return reponse()->json(['error' => 'Erreur du serveur'], 500);
-        }
+{
+    try {
+        return response()->json([
+            'quizzes' => Quiz::with(['questions' => function($query) {
+                $query->select('id', 'quiz_id', /* other needed fields */);
+            }])->withCount('questions')->get()
+        ]);
+    } catch (\Exception $e) {
+        \Log::error($e);
+        return response()->json(['error' => 'Server error: ' . $e->getMessage()], 500);
     }
+}
 
-    public function getByLanguage($langauage)
-    {
-        try {
-            $quizzes = Quiz::where('langage', $langauage)
-                          ->withCount('questions')
-                          ->get();
-            
-            return response()->json([
-                'quizzes' => $quizzes
-            ]);
-        } catch (\Exception $e) {
-            \Log::error($e);
-            return response()->json(['error' => 'Erreur du serveur'], 500);
+   public function getByLangage($langage)
+{
+    try {
+        $validLanguages = ['html', 'css', 'javascript', 'python', 'react', 'php'];
+
+        if (!in_array($langage, $validLanguages)) {
+            return response()->json(['error' => 'Langage non reconnu.'], 400);
         }
+
+        $quizzes = Quiz::where('langage', $langage)
+                       ->with(['questions.reponses'])
+                       ->withCount('questions')
+                       ->get();
+
+        return response()->json(['quizzes' => $quizzes]);
+    } catch (\Exception $e) {
+        \Log::error($e->getMessage());
+        return response()->json(['error' => 'Erreur du serveur'], 500);
     }
+}
 
     public function store(Request $request)
     {
